@@ -1,0 +1,23 @@
+2025-08-14 17:56:12,579 1 WARNING ? py.warnings: /usr/lib/python3/dist-packages/odoo/tools/config.py:560: DeprecationWarning: The longpolling-port is a deprecated alias to the gevent-port option, please use the latter.
+  File "/usr/bin/odoo", line 8, in <module>
+    odoo.cli.main()
+  File "/usr/lib/python3/dist-packages/odoo/cli/command.py", line 66, in main
+    o.run(args)
+  File "/usr/lib/python3/dist-packages/odoo/cli/server.py", line 184, in run
+    main(args)
+  File "/usr/lib/python3/dist-packages/odoo/cli/server.py", line 131, in main
+    odoo.tools.config.parse_config(args)
+  File "/usr/lib/python3/dist-packages/odoo/tools/config.py", line 380, in parse_config
+    self._warn_deprecated_options()
+  File "/usr/lib/python3/dist-packages/odoo/tools/config.py", line 560, in _warn_deprecated_options
+    warnings.warn(
+ 
+2025-08-14 17:56:12,580 1 INFO ? odoo: Odoo version 17.0-20241017 
+2025-08-14 17:56:12,580 1 INFO ? odoo: Using configuration file at /etc/odoo/odoo.conf 
+2025-08-14 17:56:12,580 1 INFO ? odoo: addons paths: ['/usr/lib/python3/dist-packages/odoo/addons', '/etc/odoo/addons/17.0', '/mnt/extra-addons', '/mnt/enterprise'] 
+2025-08-14 17:56:12,580 1 INFO ? odoo: database: odoo@db:5432 
+2025-08-14 17:56:12,967 1 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltopdf binary at /usr/local/bin/wkhtmltopdf 
+2025-08-14 17:56:13,862 1 INFO ? odoo.service.server: HTTP service (werkzeug) running on 56dbf4f657d8:8069 
+2025-08-14 17:56:35,588 1 INFO ? odoo.service.server: Initiating shutdown 
+2025-08-14 17:56:35,588 1 INFO ? odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2025-08-14 17:56:35,898 1 INFO ? odoo.sql_db: ConnectionPool(used=0/count=0/max=64): Closed 2 connections  

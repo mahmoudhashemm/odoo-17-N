@@ -1,0 +1,53 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres:14.10
+    user: root
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=Omar@012
+      - POSTGRES_DB=postgres
+    restart: always
+    volumes:
+      - ./postgresql:/var/lib/postgresql/data
+    mem_limit: 6g
+    cpus: 6
+    networks:
+      net6:
+        ipv4_address: 172.28.10.3   # IP ثابت لقاعدة البيانات
+
+  odoo17:
+    image: mahmoudhashemm/odoo-17:latest
+    user: root
+    depends_on:
+      - db
+    ports:
+      - "10019:8069"               # منفذ Odoo
+      - "20014:8072"               # منفذ الدردشة الحية
+    tty: true
+    command: --
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=Omar@012
+    volumes:
+      - ./addons:/mnt/extra-addons
+      - ./enterprise:/mnt/enterprise
+      - ./etc:/etc/odoo
+    restart: always
+    mem_limit: 6g
+    cpus: 6
+    networks:
+      net6:
+        ipv4_address: 172.28.10.2   # IP ثابت لـ Odoo
+
+networks:
+  net6:
+    name: odoo-net6
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.10.0/29
+          gateway: 172.28.10.1
+          ip_range: 172.28.10.0/29
