@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Quick install
 
 
@@ -138,3 +139,6 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 ``` bash
 git clone --branch main --depth 1 git@github.com:mahmoudhashemm/odoo17
 ```
+=======
+# odoo-17-test
+>>>>>>> 1bee3e418f75d5d5105d09a5cb08dee2750eb30e
