@@ -10,7 +10,7 @@ ODOO_IP=$8
 DB_IP=$9
 
 # clone Odoo directory
-git clone --depth=1 https://github.com/mahmoudhashemm/Hello-odoo17.git $DESTINATION
+git clone --depth=1 https://github.com/mahmoudhashemm/odoo-17-test.git $DESTINATION
 rm -rf $DESTINATION/.git
 
 # set permissions
