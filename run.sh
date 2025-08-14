@@ -29,7 +29,7 @@ mkdir -p "$DESTINATION/postgresql" "$DESTINATION/enterprise"
 chmod +x "$DESTINATION/entrypoint.sh" 2>/dev/null || true
 sudo chmod -R 777 "$DESTINATION"
 
-# إعداد inotify لزيادة الحد
+# إعداد inotify
 if grep -qF "fs.inotify.max_user_watches" /etc/sysctl.conf; then
   grep -F "fs.inotify.max_user_watches" /etc/sysctl.conf
 else
@@ -37,23 +37,23 @@ else
 fi
 sudo sysctl -p
 
-# إزالة التعليقات من yml
+# إزالة التعليقات
 sed -i 's/#.*$//' "$DESTINATION/docker-compose.yml"
 
-# تعديل القيم في yml
-sed -i "s/10019/${PORT}/g"  "$DESTINATION/docker-compose.yml"
-sed -i "s/20014/${CHAT}/g"  "$DESTINATION/docker-compose.yml"
-sed -i "s/:8069\"/:${PORT8069}\"/g" "$DESTINATION/docker-compose.yml"
-sed -i "s/:8072\"/:${PORT8072}\"/g" "$DESTINATION/docker-compose.yml"
-sed -i "s/172.28.10.0\/29/${SUBNET}/g" "$DESTINATION/docker-compose.yml"
-sed -i "s/172.28.10.1/${GATEWAY}/g" "$DESTINATION/docker-compose.yml"
-sed -i "s/172.28.10.2/${ODOO_IP}/g" "$DESTINATION/docker-compose.yml"
-sed -i "s/172.28.10.3/${DB_IP}/g" "$DESTINATION/docker-compose.yml"
-sed -i "s/odoo-net6/${NETWORK_NAME}/g" "$DESTINATION/docker-compose.yml"
+# تعديل القيم في yml باستخدام Delimiter آمن #
+sed -i "s#10019#${PORT}#g"              "$DESTINATION/docker-compose.yml"
+sed -i "s#20014#${CHAT}#g"              "$DESTINATION/docker-compose.yml"
+sed -i "s#:8069\"#:${PORT8069}\"#g"     "$DESTINATION/docker-compose.yml"
+sed -i "s#:8072\"#:${PORT8072}\"#g"     "$DESTINATION/docker-compose.yml"
+sed -i "s#172.28.10.0/29#${SUBNET}#g"   "$DESTINATION/docker-compose.yml"
+sed -i "s#172.28.10.1#${GATEWAY}#g"     "$DESTINATION/docker-compose.yml"
+sed -i "s#172.28.10.2#${ODOO_IP}#g"     "$DESTINATION/docker-compose.yml"
+sed -i "s#172.28.10.3#${DB_IP}#g"       "$DESTINATION/docker-compose.yml"
+sed -i "s#odoo-net6#${NETWORK_NAME}#g"  "$DESTINATION/docker-compose.yml"
 
 # تعديل odoo.conf
-sed -i "s/8069/${PORT8069}/g" "$DESTINATION/etc/odoo.conf"
-sed -i "s/8072/${PORT8072}/g" "$DESTINATION/etc/odoo.conf"
+sed -i "s#8069#${PORT8069}#g" "$DESTINATION/etc/odoo.conf"
+sed -i "s#8072#${PORT8072}#g" "$DESTINATION/etc/odoo.conf"
 
 # تنزيل enterprise
 if git ls-remote git@github.com:mahmoudhashemm/odoo17pro >/dev/null 2>&1; then
