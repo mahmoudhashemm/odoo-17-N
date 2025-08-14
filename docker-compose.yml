@@ -15,7 +15,7 @@ services:
     cpus: 6
     networks:
       net6:
-        ipv4_address: 172.28.10.3   # سيتم استبداله بـ DB_IP عبر run.sh
+        ipv4_address: 172.28.10.3
 
   odoo17:
     image: mahmoudhashemm/odoo-17:latest
@@ -23,8 +23,8 @@ services:
     depends_on:
       - db
     ports:
-      - "10019:8069"               # سيتم استبدال 10019 بـ $PORT و 8069 بـ $PORT8069
-      - "20014:8072"               # سيتم استبدال 20014 بـ $CHAT و 8072 بـ $PORT8072
+      - "10019:8069"
+      - "20014:8072"
     tty: true
     command: --
     environment:
@@ -40,14 +40,14 @@ services:
     cpus: 6
     networks:
       net6:
-        ipv4_address: 172.28.10.2   # سيتم استبداله بـ ODOO_IP عبر run.sh
+        ipv4_address: 172.28.10.2
 
 networks:
   net6:
-    name: odoo-net6                 # سيتم استبداله بـ NETWORK_NAME
+    name: odoo-net6
     driver: bridge
     ipam:
       config:
-        - subnet: 172.28.10.0/29    # سيتم استبداله بـ SUBNET
-          gateway: 172.28.10.1      # سيتم استبداله بـ GATEWAY
-          ip_range: 172.28.10.0/29  # سيتم استبداله بـ IP_RANGE (نستخدم نفس الـ /29)
+        - subnet: 172.28.10.0/29
+          gateway: 172.28.10.1
+          ip_range: 172.28.10.0/29
