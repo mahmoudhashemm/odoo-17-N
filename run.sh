@@ -24,22 +24,27 @@ IP_RANGE="${11:-$SUBNET}"
 git clone --depth=1 https://github.com/mahmoudhashemm/odoo-17-test.git "$DESTINATION"
 rm -rf "$DESTINATION/.git"
 
-# إنشاء مجلدات
+# إنشاء مجلدات وصلاحيات
 mkdir -p "$DESTINATION/postgresql" "$DESTINATION/enterprise"
+chmod +x "$DESTINATION/entrypoint.sh" 2>/dev/null || true
 sudo chmod -R 777 "$DESTINATION"
 
-# نسخ yml
-cp docker-compose.yml "$DESTINATION/docker-compose.yml"
+# إعداد inotify لزيادة الحد
+if grep -qF "fs.inotify.max_user_watches" /etc/sysctl.conf; then
+  grep -F "fs.inotify.max_user_watches" /etc/sysctl.conf
+else
+  echo "fs.inotify.max_user_watches = 524288" | sudo tee -a /etc/sysctl.conf
+fi
+sudo sysctl -p
 
-# 1) إزالة التعليقات
+# إزالة التعليقات من yml
 sed -i 's/#.*$//' "$DESTINATION/docker-compose.yml"
 
-# 2) تعديل القيم
+# تعديل القيم في yml
 sed -i "s/10019/${PORT}/g"  "$DESTINATION/docker-compose.yml"
 sed -i "s/20014/${CHAT}/g"  "$DESTINATION/docker-compose.yml"
 sed -i "s/:8069\"/:${PORT8069}\"/g" "$DESTINATION/docker-compose.yml"
 sed -i "s/:8072\"/:${PORT8072}\"/g" "$DESTINATION/docker-compose.yml"
-
 sed -i "s/172.28.10.0\/29/${SUBNET}/g" "$DESTINATION/docker-compose.yml"
 sed -i "s/172.28.10.1/${GATEWAY}/g" "$DESTINATION/docker-compose.yml"
 sed -i "s/172.28.10.2/${ODOO_IP}/g" "$DESTINATION/docker-compose.yml"
@@ -51,12 +56,26 @@ sed -i "s/8069/${PORT8069}/g" "$DESTINATION/etc/odoo.conf"
 sed -i "s/8072/${PORT8072}/g" "$DESTINATION/etc/odoo.conf"
 
 # تنزيل enterprise
-git clone --depth 1 --branch main https://github.com/mahmoudhashemm/odoo17pro "$DESTINATION/enterprise" || true
+if git ls-remote git@github.com:mahmoudhashemm/odoo17pro >/dev/null 2>&1; then
+  git clone --depth 1 --branch main git@github.com:mahmoudhashemm/odoo17pro "$DESTINATION/enterprise"
+else
+  git clone --depth 1 --branch main https://github.com/mahmoudhashemm/odoo17pro "$DESTINATION/enterprise" || true
+fi
 
-# تشغيل
+# طباعة yml بعد التعديلات
+echo "===== docker-compose.yml after modifications ====="
+cat "$DESTINATION/docker-compose.yml"
+echo "=================================================="
+
+# تشغيل Odoo
 cd "$DESTINATION"
-docker compose up -d || docker-compose up -d
+if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then
+  docker compose up -d
+else
+  docker-compose up -d
+fi
 
 echo "✅ Started Odoo @ http://localhost:${PORT}"
 echo "🔑 Master Password: Omar@012"
-echo "📦 Network: ${NETWORK_NAME} | Subnet: ${SUBNET}"
+echo "🌐 Network: ${NETWORK_NAME} | Subnet: ${SUBNET} | IP Range: ${IP_RANGE}"
+echo "📦 Odoo IP: ${ODOO_IP} | DB IP: ${DB_IP}"
