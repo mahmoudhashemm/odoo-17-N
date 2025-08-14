@@ -32,7 +32,7 @@ for p in "$PORT" "$CHAT"; do
 done
 
 # clone Odoo directory
-git clone --depth=1 https://github.com/mahmoudhashemm/Hello-odoo17.git "$DESTINATION"
+git clone --depth=1 https://github.com/mahmoudhashemm/odoo-17-test.git "$DESTINATION"
 rm -rf "$DESTINATION/.git"
 
 # مجلدات وصلاحيات
