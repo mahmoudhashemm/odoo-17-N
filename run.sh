@@ -64,7 +64,7 @@ fi
 
 # طباعة yml بعد التعديلات
 echo "===== docker-compose.yml after modifications ====="
-cat "$DESTINATION/docker-compose.yml"
+#cat "$DESTINATION/docker-compose.yml"
 echo "=================================================="
 
 # تشغيل Odoo
