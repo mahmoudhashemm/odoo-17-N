@@ -21,7 +21,7 @@ NETWORK_NAME="${10:-${DESTINATION}_net6}"
 IP_RANGE="${11:-$SUBNET}"
 
 # استنساخ الريبو
-git clone --depth=1 https://github.com/mahmoudhashemm/odoo-17-test.git "$DESTINATION"
+git clone --depth=1 https://github.com/mahmoudhashemm/odoo-17-N.git "$DESTINATION"
 rm -rf "$DESTINATION/.git"
 
 # إنشاء مجلدات وصلاحيات
